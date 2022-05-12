@@ -8,4 +8,4 @@ SELECT * FROM Plasma.RejectPlasmaReasons WHERE Created > '2022-05-01 00:00:00.00
 
 SELECT * FROM Plasma.DeliverRecords WHERE Created > '2022-04-01 00:00:00.00';
 
-SELECT * FROM Plasma.Message
+SELECT * FROM Plasma.Appointments WHERE Created > '2022-05-01 00:00:00.00';
