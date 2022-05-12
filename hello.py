@@ -1,7 +1,7 @@
 import datetime
 import requests
 Url = 'http://qa-plasma.gdmk.cn:8280/Regist/Archive/Create'
-id = "445381199208228808"
+id = "445381199208223046"
 GMT_FORMAT = '%a, %d %b %Y %H:%M:%S GMT'
 Date = datetime.datetime.utcnow().strftime(GMT_FORMAT)
 header = {
@@ -20,7 +20,8 @@ header = {
 body = """Score=&PersonalInfo.IDPhoto=&PersonalInfo.FacePice=&PersonalInfo.IDPhotoBase64=&PersonalInfo.IDPhoto=&PersonalInfo.PictureBase64=&Biometric=0&ArchiveCode=&DateCollected=2022-05-12&PersonalInfo.Name=%E7%BD%97%E6%A1%82%E6%96%B0&PersonalInfo.Race=%E6%B1%89%E6%97%8F&PersonalInfo.Birthday=1996-09-28&PersonalInfo.Gender=1&Age=25&PersonalInfo.IDType=%E8%BA%AB%E4%BB%BD%E8%AF%81&PersonalInfo.IDNum={}&PersonalInfo.IdBeginDate=2017-05-01&PersonalInfo.Organization=%E5%B9%BF%E4%B8%9C%E7%9C%81%E7%BD%97%E5%AE%9A%E5%B8%82&PersonalInfo.IDExpireDate=2027-05-01&PersonalInfo.Province=%E5%B9%BF%E4%B8%9C&PersonalInfo.County=%E7%BD%97%E5%AE%9A%E5%B8%82&AreaType=1&PersonalInfo.IDAddress=%E5%B9%BF%E4%B8%9C%E7%9C%81%E7%BD%97%E5%AE%9A%E5%B8%82%E5%A4%AA%E5%B9%B3%E9%95%87&PersonalInfo.Zipcode=&Job=%E5%B7%A5%E4%BA%BA&Maintainer=&Phone=&MobilePhone=&Creator=%E7%AE%A1%E7%90%86%E5%91%98&Remark=""".format(id)
 
 r = requests.post(Url, body, headers=header, allow_redirects=False)
-if r.status_code == 302:
+print(r.text)
+if r.status_code == 302 and id in r.text :
     finger = "http://qa-plasma.gdmk.cn:8280/Regist/Archive/Finger/{}".format(id)
     fres = requests.get(finger, headers=header, allow_redirects=False)
     print(fres.text)
