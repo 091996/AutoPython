@@ -8,3 +8,5 @@ res.encoding = 'bg2312'
 # 答第二个问题，get() 方法需要输入一个网页链接
 print(res.text)
 # print('中文乱码')
+
+print("git提交")
