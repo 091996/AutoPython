@@ -4,7 +4,7 @@ import datetime
 
 def IdBuild():
     # 身份证前六位代码
-    diqu = ['445302', '445381', '445322', '445321', '445323']
+    diqu = ['445302', '445381', '445322', '445321', '445303']
 
     # 随机生成约18-55岁的出生日期
     birthdate = (datetime.date.today() - datetime.timedelta(days=random.randint(6800, 20000)))
