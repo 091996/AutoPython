@@ -27,3 +27,27 @@ def IdBuild():
 
     # 拼接得到完整的18位身份证号
     return ident + key[summation % 11]
+
+
+def analysis():
+    ID = IdBuild()
+    year = ID[6:10]
+    month = ID[10:12]
+    day = ID[12:14]
+    birthday = year + '-' + month + '-' + day
+    birth_d = datetime.datetime.strptime(birthday, "%Y-%m-%d")
+    today_d = datetime.datetime.now()
+    if today_d.month > birth_d.month:
+        age = today_d.year - birth_d.year
+    else:
+        age = today_d.year - birth_d.year - 1
+    sex = ID[16:17]
+    sex = int(sex)
+    if sex % 2:
+        sex = 2
+    else:
+        sex = 1
+    addr = {'445302': '云浮市云城区', '445381': '云浮市罗定市', '445322': '云浮市郁南县', '445321': '云浮市新兴县', '445303': '云浮市云安区'}
+    address = addr.get(ID[0:6])
+    return ID, birthday, age, sex, address
+
