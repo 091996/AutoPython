@@ -31,10 +31,7 @@ class MSSQL:
         self.conn.commit()
         self.conn.close()
 
-def main():
-    ms = MSSQL(host='10.10.3.6,1433', user="sa", pwd="Maike@10.10.3.5", db="Plasma")
-    resList = ms.ExecQuery("SELECT * FROM titles")
+def sqlselect(sql):
+    ms = MSSQL(host='192.168.1.197:49307', user="sa", pwd="maike123!@#+1s", db="PlasmaDB44002")
+    resList = ms.ExecQuery(sql)
     return(resList)
-
-if __name__ == '__main__':
-    main()
