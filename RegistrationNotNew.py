@@ -1,7 +1,7 @@
 import requests
-
 from Login import login
 from sqlcont import sqlselect
+
 
 reginfo = sqlselect("""
 select top 1 pa.PlasmaCard,
