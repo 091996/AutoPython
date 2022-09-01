@@ -26,7 +26,9 @@ for i in range(0, len(examlist)):
     id = str(examlist[i][1])
     sql = "select top 1 py.Weight, py.Temperature, py.Pulse, py.SBP, py.DBP from Plasma.Archives pa left join Plasma.Registrations pr on pa.Id = pr.ArchiveId left join Plasma.PhysicalExams py on py.Id = pr.ExamResultId where pa.Id = {} and pr.ExamResultId is not null order by pr.Created desc".format(
         "'"+id+"'")
-    LastExam = sqlselect(sql)[0]
+
+    LastExam = sqlselect(sql)
+    print(LastExam)
 
     body = "ReturnToIntradayPlysicalExam=False&IDNum={0}&" \
            "Registration.Archive.PersonalInfo.PictureBase64=&Registration.Archive.PersonalInfo.IDNum={1}&" \
