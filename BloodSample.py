@@ -49,6 +49,5 @@ for i in range(0, len(BloodSamplelist)):
            "&CollectDeptName=罗定浆站&ArchiveId=" + str(BloodSamplelist[i][1]) + \
            "&RegistrationId=" + str(BloodSamplelist[i][2]) + "&SampleState=Collected&Archive.PersonalInfo.PictureBase64=&" \
             "Archive.PersonalInfo.IDNum=" + str(BloodSamplelist[i][0]) + "&__RequestVerificationToken=" + Token
-    print(body)
     r = requests.post(BloodSampleUrl, data=body.encode('utf-8'), headers=headers, allow_redirects=False)
     print(r.reason)
