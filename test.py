@@ -1,7 +1,5 @@
-import datetime
-from faker import Faker
-print(datetime.datetime.now().strftime('%Y-%m-%d'))
+import time
 
-fake = Faker(locale='zh_CN')
-addr = '云浮市云城区' + fake.street_address()
-print(addr)
+Checkday = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+
+print(Checkday)

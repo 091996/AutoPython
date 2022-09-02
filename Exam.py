@@ -46,12 +46,28 @@ for i in range(0, len(examlist)):
                "Registration.Archive.PersonalInfo.Gender={2}&Registration.SupplyNum={3}&" \
                "DateCollected={4}&Weight={5}&Temperature={6}&Pulse={7}&SBP={8}&DBP={9}&CardioPulmonary=1&" \
                "Skin=1&ENT=1&Hepatolienal=1&Limbs=1&others=&Result=0&Doctor=陆艳春&PermittedDoctor=林慧莲&" \
-               "Registration.Id={10}&LastWeight={11}&LastTemp={12}&LastPulse={13}&" \
+               "Registration.Id={10}&LastWeight={11}&LastTemp={12}&LastPulse={13}&AutoCreateMedicalRecord=true&" \
                "LastSBP={14}&LastDBP={15}&Score=&physicalInfo.Archive.Id={16}".format(examlist[i][0], examlist[i][0],
-            examlist[i][4], examlist[i][3], day, random.randint(int(LastExam[0]) - 1, int(LastExam[0]) + 1),
-            round(random.uniform(round(LastExam[1], 2) - 0.5, round(LastExam[1], 2) + 0.5), 1),
-            random.randint(int(LastExam[2]) - 5, int(LastExam[2]) + 5), random.randint(int(LastExam[3]) - 5,int(LastExam[3]) + 5),
-            random.randint(int(LastExam[4]) - 5, int(LastExam[4]) + 5), examlist[i][2], int(LastExam[0]),
-            round(LastExam[1], 1), int(LastExam[2]), int(LastExam[3]), int(LastExam[4]), examlist[i][1])
+                                                                                      examlist[i][4], examlist[i][3],
+                                                                                      day, random.randint(
+                int(LastExam[0]) - 1, int(LastExam[0]) + 1),
+                                                                                      round(random.uniform(
+                                                                                          round(LastExam[1], 2) - 0.5,
+                                                                                          round(LastExam[1], 2) + 0.5),
+                                                                                            1),
+                                                                                      random.randint(
+                                                                                          int(LastExam[2]) - 5,
+                                                                                          int(LastExam[2]) + 5),
+                                                                                      random.randint(
+                                                                                          int(LastExam[3]) - 5,
+                                                                                          int(LastExam[3]) + 5),
+                                                                                      random.randint(
+                                                                                          int(LastExam[4]) - 5,
+                                                                                          int(LastExam[4]) + 5),
+                                                                                      examlist[i][2], int(LastExam[0]),
+                                                                                      round(LastExam[1], 1),
+                                                                                      int(LastExam[2]),
+                                                                                      int(LastExam[3]),
+                                                                                      int(LastExam[4]), examlist[i][1])
     r = requests.post(ExamUrl, data=body.encode('utf-8'), headers=headers, allow_redirects=False)
     print(r.text)
