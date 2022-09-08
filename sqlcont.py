@@ -32,7 +32,7 @@ class MSSQL:
         self.conn.close()
 
 
-def sqlselect(sql):
-    # ms = MSSQL(host='192.168.1.197:49307', user="sa", pwd="maike123!@#+1s", db="PlasmaDB44002")
-    resList = MSSQL.ExecQuery(sql)
+def sqlselect(sql, host, user, pwd, db):
+    ms = MSSQL(host=host, user=user, pwd=pwd, db=db)
+    resList = ms.ExecQuery(sql)
     return (resList)

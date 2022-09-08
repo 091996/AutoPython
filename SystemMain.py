@@ -2,8 +2,10 @@ import time
 from tkinter import *
 
 from ArchiveInsert import insert
+from Exam import phy
 from Login import login
-from sqlcont import MSSQL
+from RegistrationNew import newreg
+from RegistrationNotNew import unnewreg
 
 root = Tk()
 root.title("血浆系统测试数据生成器")
@@ -70,6 +72,11 @@ def showinfo(result):
     textvar = realtime + result  # 系统时间和传入结果
     text.insert('end', textvar)  # 显示在text框里面
     text.insert('insert', '\n')  # 换行
+    text.update()
+
+
+
+
 
 def show():
     global header
@@ -96,7 +103,6 @@ def show():
     linkuser = linkuser_entry.get()
     linkpas = linkpas_entry.get()
     linkdb = linkdb_entry.get()
-    MSSQL(host=link, user=linkuser, pwd=linkpas, db=linkdb)
 
     for k, v in check.items():
         if v != 0:
@@ -106,10 +112,22 @@ def show():
                     ins = insert(host, header)
                     showinfo(ins)
                     time.sleep(1)
-            if v == 2:
+            elif v == 2:
                 for i in range(0, entvalue[v-1]):
-                    print(i)
-
+                    new = newreg(host, header, link, linkuser, linkpas, linkdb)
+                    showinfo(new)
+                    time.sleep(1)
+            elif v == 3:
+                for i in range(0, entvalue[v-1]):
+                    unnew = unnewreg(host, header, link, linkuser, linkpas, linkdb)
+                    showinfo(unnew)
+                    time.sleep(1)
+            elif v == 4:
+                for i in range(0, entvalue[v-1]):
+                    phylog = phy(host, header, link, linkuser, linkpas, linkdb)
+                    showinfo(phylog)
+                    time.sleep(1)
+    showinfo('执行完毕')
 
 Button(root, text='开 始', command=show).grid(row=99, column=1, columnspan=6, pady=5)
 
