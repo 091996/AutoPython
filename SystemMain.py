@@ -3,19 +3,22 @@ from tkinter import *
 
 from ArchiveInsert import insert
 from BloodSample import sample
+from Electrocardiogram import elereg
 from Exam import phy
 from Login import login
 from RegistrationNew import newreg
 from RegistrationNotNew import unnewreg
+from XRay import xrayreg
 
 root = Tk()
 root.title("血浆系统测试数据生成器")
 screenwidth = root.winfo_screenwidth()  # 获取显示屏宽度
 screenheight = root.winfo_screenheight()  # 获取显示屏高度
-size = '%dx%d+%d+%d' % (600, 450, (screenwidth - 600) / 2, (screenheight - 450) / 2)  # 设置窗口居中参数
+size = '%dx%d+%d+%d' % (600, 600, (screenwidth - 600) / 2, (screenheight - 600) / 2)  # 设置窗口居中参数
 root.geometry(size)
 
-items = {'建立新档案': 1, '无浆证浆员登记': 2, '有浆证浆员登记': 3, '建立体格检查并创建合格的病史征询': 4, '创建体检血样': 5}
+items = {'建立新档案': 1, '无浆证浆员登记': 2, '有浆证浆员登记': 3, '建立体格检查并创建合格的病史征询': 4, '创建体检血样': 5,
+         '为当天登记但没有胸片记录的创建合格记录': 6, '为当天登记但没有心电记录的创建合格记录': 7, '血样接收': 8}
 header = {}
 vars = []
 strvar = []
@@ -133,6 +136,17 @@ def show():
                     samplelog = sample(host, header, link, linkuser, linkpas, linkdb)
                     showinfo(samplelog)
                     time.sleep(1)
+            elif v == 6:
+                for i in range(0, entvalue[v-1]):
+                    xra = xrayreg(host, header, link, linkuser, linkpas, linkdb)
+                    showinfo(xra)
+                    time.sleep(1)
+            elif v == 7:
+                for i in range(0, entvalue[v-1]):
+                    ele = elereg(host, header, link, linkuser, linkpas, linkdb)
+                    showinfo(ele)
+                    time.sleep(1)
+
     showinfo('执行完毕')
 
 Button(root, text='开 始', command=show).grid(row=99, column=1, columnspan=6, pady=5)

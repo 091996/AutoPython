@@ -29,28 +29,30 @@ def sample(host, headers, linkhost, user, pwd, db):
       and pr.ElectrocardiogramId is not null
       and pr.XRayResultId is not null""", linkhost, user, pwd, db)
 
+    if len(BloodSamplelist) != 0:
+        # 先找出 __RequestVerificationToken
+        headers[
+            'Referer'] = host + '/PhysicalExamination/Electrocardiogram/Create?SupplyNum={}'.format(
+            BloodSamplelist[0][5])
+        BloobSampCreUrl = host + '/Sampling/BloodSample/Create?SupplyNum=' + str(BloodSamplelist[0][5])
+        r = requests.get(BloobSampCreUrl, headers=headers, allow_redirects=False)
+        time.sleep(1)
+        soup = BeautifulSoup(r.text, 'html.parser', from_encoding='utf-8')
+        links = soup.find_all("input", {"name": "__RequestVerificationToken"})
+        Token = links[0]['value']
 
-    # 先找出 __RequestVerificationToken
-    headers[
-        'Referer'] = 'http://qa-plasma.gdmk.cn:8280/PhysicalExamination/Electrocardiogram/Create?SupplyNum={}'.format(
-        BloodSamplelist[0][5])
-    BloobSampCreUrl = 'http://qa-plasma.gdmk.cn:8280/Sampling/BloodSample/Create?SupplyNum=' + str(BloodSamplelist[0][5])
-    r = requests.get(BloobSampCreUrl, headers=headers, allow_redirects=False)
-    time.sleep(1)
-    soup = BeautifulSoup(r.text, 'html.parser', from_encoding='utf-8')
-    links = soup.find_all("input", {"name": "__RequestVerificationToken"})
-    Token = links[0]['value']
-
-    CollectDate = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-    print(BloodSamplelist[0])
-    body = "Score=&PlasmaTypeDisplay=" + BloodSamplelist[0][3] + "&PlasmaType=" + str(BloodSamplelist[0][4]) + \
-           "&SampleType=0&CollectOperator=管理员&CollectDate=" + CollectDate + \
-           "&CollectDeptName=罗定浆站&ArchiveId=" + str(BloodSamplelist[0][1]) + \
-           "&RegistrationId=" + str(BloodSamplelist[0][2]) + "&SampleState=Collected&Archive.PersonalInfo.PictureBase64=&" \
-            "Archive.PersonalInfo.IDNum=" + str(BloodSamplelist[0][0]) + "&__RequestVerificationToken=" + Token
-    r = requests.post(BloodSampleUrl, data=body.encode('utf-8'), headers=headers, allow_redirects=False)
-    if r.reason == 'Found':
-        log = '浆员:' + BloodSamplelist[0][0] + '血样登记成功'
+        CollectDate = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+        print(BloodSamplelist[0])
+        body = "Score=&PlasmaTypeDisplay=" + BloodSamplelist[0][3] + "&PlasmaType=" + str(BloodSamplelist[0][4]) + \
+               "&SampleType=0&CollectOperator=管理员&CollectDate=" + CollectDate + \
+               "&CollectDeptName=罗定浆站&ArchiveId=" + str(BloodSamplelist[0][1]) + \
+               "&RegistrationId=" + str(BloodSamplelist[0][2]) + "&SampleState=Collected&Archive.PersonalInfo.PictureBase64=&" \
+                "Archive.PersonalInfo.IDNum=" + str(BloodSamplelist[0][0]) + "&__RequestVerificationToken=" + Token
+        r = requests.post(BloodSampleUrl, data=body.encode('utf-8'), headers=headers, allow_redirects=False)
+        if r.reason == 'Found':
+            log = '浆员:' + BloodSamplelist[0][0] + '血样登记成功'
+        else:
+            log = '浆员:' + BloodSamplelist[0][0] + '血样登记失败'
+        return log
     else:
-        log = '浆员:' + BloodSamplelist[0][0] + '血样登记失败'
-    return log
+        return '无需登记的血样'
