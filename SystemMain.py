@@ -2,6 +2,7 @@ import time
 from tkinter import *
 
 from ArchiveInsert import insert
+from BloodSample import sample
 from Exam import phy
 from Login import login
 from RegistrationNew import newreg
@@ -14,7 +15,7 @@ screenheight = root.winfo_screenheight()  # 获取显示屏高度
 size = '%dx%d+%d+%d' % (600, 450, (screenwidth - 600) / 2, (screenheight - 450) / 2)  # 设置窗口居中参数
 root.geometry(size)
 
-items = {'建立新档案': 1, '无浆证浆员登记': 2, '有浆证浆员登记': 3, '建立体格检查并创建合格的病史征询': 4}
+items = {'建立新档案': 1, '无浆证浆员登记': 2, '有浆证浆员登记': 3, '建立体格检查并创建合格的病史征询': 4, '创建体检血样': 5}
 header = {}
 vars = []
 strvar = []
@@ -57,7 +58,7 @@ for i in range(len(items)):
     vars.append(IntVar())
     strvar.append(IntVar())
 for key, value in items.items():
-    Checkbutton(root, onvalue=value, variable=vars[list(items.keys()).index(key)]).grid(row=value+3, column=1, pady=5)
+    Checkbutton(root, onvalue=value, variable=vars[list(items.keys()).index(key)]).grid(row=value+3, column=1, pady=2)
     Label(root, text=key, justify=LEFT).grid(row=value+3, column=2, columnspan=3)
     Entry(root, textvariable=strvar[list(items.keys()).index(key)]).grid(row=value+3, column=5, columnspan=2)
 
@@ -126,6 +127,11 @@ def show():
                 for i in range(0, entvalue[v-1]):
                     phylog = phy(host, header, link, linkuser, linkpas, linkdb)
                     showinfo(phylog)
+                    time.sleep(1)
+            elif v == 5:
+                for i in range(0, entvalue[v-1]):
+                    samplelog = sample(host, header, link, linkuser, linkpas, linkdb)
+                    showinfo(samplelog)
                     time.sleep(1)
     showinfo('执行完毕')
 

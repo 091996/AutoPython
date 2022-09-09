@@ -26,10 +26,7 @@ def newreg(host, headers, linkhost, user, pwd, db):
        order by pa.Created asc
        """, linkhost, user, pwd, db)
 
-
        info = reginfo[0]
-       print(info)
-
        regnotnewurl = '{}/Regist/Registration/Save'.format(host)
        body = "PlasmaType={0}&RegisterType={1}&FingerIgnore=true&FingerIgnoreRemark=自动生成&" \
               "Archive.Id={2}&Archive.ArchiveCode={3}&" \

@@ -18,7 +18,7 @@ def phy(host, headers, linkhost, user, pwd, db):
     where datediff(dd, pr.Created, sysdatetime()) = 0
       and pr.ExamResultId is null""", linkhost, user, pwd, db)
     # 性别女：Female  男：Male
-    print(examlist)
+
     
     id = str(examlist[0][1])
     sql = "select top 1 py.Weight, py.Temperature, py.Pulse, py.SBP, py.DBP from Plasma.Archives pa left join Plasma.Registrations pr on pa.Id = pr.ArchiveId left join Plasma.PhysicalExams py on py.Id = pr.ExamResultId where pa.Id = {} and pr.ExamResultId is not null order by pr.Created desc".format(
