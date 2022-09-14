@@ -44,7 +44,7 @@ def sample(host, headers, linkhost, user, pwd, db):
         CollectDate = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
         print(BloodSamplelist[0])
         body = "Score=&PlasmaTypeDisplay=" + BloodSamplelist[0][3] + "&PlasmaType=" + str(BloodSamplelist[0][4]) + \
-               "&SampleType=0&CollectOperator=管理员&CollectDate=" + CollectDate + \
+               "&SampleType=0&CollectOperator=陆艳春&CollectDate=" + CollectDate + \
                "&CollectDeptName=罗定浆站&ArchiveId=" + str(BloodSamplelist[0][1]) + \
                "&RegistrationId=" + str(BloodSamplelist[0][2]) + "&SampleState=Collected&Archive.PersonalInfo.PictureBase64=&" \
                 "Archive.PersonalInfo.IDNum=" + str(BloodSamplelist[0][0]) + "&__RequestVerificationToken=" + Token

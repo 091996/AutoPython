@@ -8,6 +8,8 @@ from Exam import phy
 from Login import login
 from RegistrationNew import newreg
 from RegistrationNotNew import unnewreg
+from SampleHB import BloodSampleHB
+from SampleRec import samplereceive
 from XRay import xrayreg
 
 root = Tk()
@@ -18,7 +20,7 @@ size = '%dx%d+%d+%d' % (600, 600, (screenwidth - 600) / 2, (screenheight - 600) 
 root.geometry(size)
 
 items = {'建立新档案': 1, '无浆证浆员登记': 2, '有浆证浆员登记': 3, '建立体格检查并创建合格的病史征询': 4, '创建体检血样': 5,
-         '为当天登记但没有胸片记录的创建合格记录': 6, '为当天登记但没有心电记录的创建合格记录': 7, '血样接收': 8}
+         '为当天登记但没有胸片记录的创建合格记录': 6, '为当天登记但没有心电记录的创建合格记录': 7, '血样接收': 8, 'HB录入': 9}
 header = {}
 vars = []
 strvar = []
@@ -86,14 +88,10 @@ def show():
     global header
     check = {}
     entvalue = {}
-
     for new_var in enumerate(vars):
         check[new_var[0]] = new_var[1].get()
     for val in enumerate(strvar):
         entvalue[val[0]] = val[1].get()
-    print(check)
-    print(entvalue)
-
     host = host_entry.get()
     hostuser = hostuser_entry.get()
     hostpas = hostpas_entry.get()
@@ -145,6 +143,16 @@ def show():
                 for i in range(0, entvalue[v-1]):
                     ele = elereg(host, header, link, linkuser, linkpas, linkdb)
                     showinfo(ele)
+                    time.sleep(1)
+            elif v == 8:
+                for i in range(0, entvalue[v-1]):
+                    rec = samplereceive(host, header, link, linkuser, linkpas, linkdb)
+                    showinfo(rec)
+                    time.sleep(1)
+            elif v == 9:
+                for i in range(0, entvalue[v - 1]):
+                    hb = BloodSampleHB(host, header, link, linkuser, linkpas, linkdb)
+                    showinfo(hb)
                     time.sleep(1)
 
     showinfo('执行完毕')

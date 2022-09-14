@@ -27,9 +27,9 @@ def elereg(host, headers, link, linkuser, linkpas, linkdb):
                                                                                  "Archive.Id=" + str(Elelist[0][0])
         r = requests.post(ElectrocardiogramUrl, data=body, headers=headers, allow_redirects=False)
         if r.reason == 'Found':
-            log = '流水号:' + Elelist[0][1] + '胸片登记成功'
+            log = '流水号:' + Elelist[0][1] + '心电信息登记成功'
         else:
-            log = '流水号:' + Elelist[0][1] + '胸片登记失败'
+            log = '流水号:' + Elelist[0][1] + '心电信息登记失败'
         return log
     else:
-        return '无今日登记/无信息信息缺失'
+        return '无今日登记/无心电信息缺失'
