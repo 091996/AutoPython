@@ -7,8 +7,7 @@ from sqlcont import sqlselect
 
 
 def sample(host, headers, linkhost, user, pwd, db):
-    headers['Cookie'] = headers['Cookie'][
-                        0:-6] + '__RequestVerificationToken=ZwL7bZFwQDjjksd5iRXlnkurZmcZd3COXVH_2Q-q7OQDydasAEdVslUmqHKTvs3UzZf8YBsPPIPgyYPB0bbm9IG3YWv5IHipwKci9JoXO8I1; ASP.NET_SessionId=wuzzs5juiai03zi2xz5eitje; ExamBiometric=1; ValidationBiometric=1'
+    headers['Cookie'] = headers['Cookie'].split('; __')[0] + '; __RequestVerificationToken=ZwL7bZFwQDjjksd5iRXlnkurZmcZd3COXVH_2Q-q7OQDydasAEdVslUmqHKTvs3UzZf8YBsPPIPgyYPB0bbm9IG3YWv5IHipwKci9JoXO8I1; ASP.NET_SessionId=wuzzs5juiai03zi2xz5eitje; ExamBiometric=1; ValidationBiometric=1'
     headers['Accept'] = 'text/html, application/xhtml+xml, image/jxr, */*'
     BloodSampleUrl = host + '/Sampling/BloodSample/Save'
 

@@ -108,7 +108,6 @@ def show():
 
     for k, v in check.items():
         if v != 0:
-            print(entvalue[v-1])
             if v == 1:
                 for i in range(0, entvalue[v-1]):
                     ins = insert(host, header)

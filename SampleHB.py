@@ -8,8 +8,7 @@ from sqlcont import sqlselect
 def BloodSampleHB(host, headers, linkhost, user, pwd, db):
     day = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     hburl = host + '/BloodSampleHB/SampleHB/Save'
-    headers['Cookie'] = headers['Cookie'][
-                        0:-6] + '__RequestVerificationToken=9KRF2KqSzt3e5cC0fa6-obvcK63DI-9iQGAT-vMsHnWUQm6GLkBUEF00usihe03Bx9P9hcZgaqBmjxbs4vBCtcX2Qp6vcjJz4nb2gno8XtY1; ASP.NET_SessionId=iyp5ytc2tbt0mqkgtswmxpal; RegistBiometric=0; ExamBiometric=1; MedicalBiometric=1; BloodSampleBiometric=1; ValidationBiometric=1'
+    headers['Cookie'] = headers['Cookie'].split('; __')[0] + '; __RequestVerificationToken=9KRF2KqSzt3e5cC0fa6-obvcK63DI-9iQGAT-vMsHnWUQm6GLkBUEF00usihe03Bx9P9hcZgaqBmjxbs4vBCtcX2Qp6vcjJz4nb2gno8XtY1; ASP.NET_SessionId=iyp5ytc2tbt0mqkgtswmxpal; RegistBiometric=0; ExamBiometric=1; MedicalBiometric=1; BloodSampleBiometric=1; ValidationBiometric=1'
     headers['Accept'] = 'text/html, application/xhtml+xml, image/jxr, */*'
     reglist = sqlselect("""select top 1 pr.Id, pr.SupplyNum from Plasma.Registrations pr 
     left join Plasma.BloodSampleHB hb on pr.Id = hb.RegistrationId 
