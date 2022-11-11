@@ -1,5 +1,6 @@
 import time
 from tkinter import *
+from tkinter import ttk
 
 from ArchiveInsert import insert
 from BloodSample import sample
@@ -22,6 +23,9 @@ root.geometry(size)
 items = {'建立新档案': 1, '无浆证浆员登记': 2, '有浆证浆员登记': 3, '建立体格检查并创建合格的病史征询': 4, '创建体检血样': 5,
          '为当天登记但没有胸片记录的创建合格记录': 6, '为当天登记但没有心电记录的创建合格记录': 7, '血样接收': 8, 'HB录入': 9}
 header = {}
+url = ''
+user = ''
+paw = ''
 vars = []
 strvar = []
 host = Label(root, text='测试地址')
@@ -31,12 +35,12 @@ host_entry.grid(row=0, column=2, pady=10)
 
 hostuser = Label(root, text='测试账号')
 hostuser.grid(row=0, column=3, pady=10)
-hostuser_entry = Entry(root, width=15, textvariable=StringVar(root, '102'))
+hostuser_entry = Entry(root, width=15, textvariable=StringVar(root, 'mkpmadmin'))
 hostuser_entry.grid(row=0, column=4, pady=10)
 
 hostpas = Label(root, text='账户密码')
 hostpas.grid(row=0, column=5, pady=10)
-hostpas_entry = Entry(root, textvariable=StringVar(root, 'Aa123456!@#'))
+hostpas_entry = Entry(root, textvariable=StringVar(root, 'Maike123!@#'))
 hostpas_entry.grid(row=0, column=6, pady=10)
 
 link = Label(root, text='数据库地址')
@@ -56,8 +60,15 @@ linkpas_entry.grid(row=1, column=6)
 
 linkdb = Label(root, text='db')
 linkdb.grid(row=2, column=1)
-linkdb_entry = Entry(root, textvariable=StringVar(root, 'PlasmaDB44002'), width=30)
-linkdb_entry.grid(row=2, column=2,  columnspan=2)
+# linkdb_entry = Entry(root, textvariable=StringVar(root, 'PlasmaDB_danxia'), width=30)
+# linkdb_entry.grid(row=2, column=2,  columnspan=2)
+
+
+comvalue = StringVar()
+comboxlist = ttk.Combobox(root, textvariable=comvalue) #初始化
+comboxlist["values"] = ("PlasmaDB_danxia", "PlasmaDB_weilun", "PlasmaDB_weiguang", "PlasmaDB_tonglu")
+comboxlist.current(0) #选择第一个
+comboxlist.grid(row=2, column=2)
 
 for i in range(len(items)):
     vars.append(IntVar())
@@ -69,6 +80,7 @@ for key, value in items.items():
 
 text = Text(root, height=12)
 text.grid(row=999, column=1, columnspan=6)
+
 
 
 
@@ -86,6 +98,9 @@ def showinfo(result):
 
 def show():
     global header
+    global url
+    global user
+    global paw
     check = {}
     entvalue = {}
     for new_var in enumerate(vars):
@@ -96,15 +111,19 @@ def show():
     hostuser = hostuser_entry.get()
     hostpas = hostpas_entry.get()
 
-    if len(header) == 0:
-        loginsystem = login(host, hostuser, hostpas)
+    if url != host or user != hostuser or paw != hostpas or len(header) == 0:
+        url = host
+        user = hostuser
+        paw = hostpas
+        loginsystem = login(url, user, paw)
         showinfo(loginsystem[0])
         header = loginsystem[1]
+
 
     link = link_entry.get()
     linkuser = linkuser_entry.get()
     linkpas = linkpas_entry.get()
-    linkdb = linkdb_entry.get()
+    linkdb = comboxlist.get()
 
     for k, v in check.items():
         if v != 0:

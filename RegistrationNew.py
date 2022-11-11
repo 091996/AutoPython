@@ -6,7 +6,7 @@ from sqlcont import sqlselect
 def newreg(host, headers, linkhost, user, pwd, db):
        reginfo = sqlselect("""select top 1 pp.Name,
                     pp.IDNum,
-                    pa.Code,
+                    iif(pa.Code is null,concat(pa.Prefix,CreateDay,SerialNum),pa.Code) Code,
                     pa.IsRegular,
                     pa.Id,
                     convert(nvarchar(20), case pa.PlasmaType

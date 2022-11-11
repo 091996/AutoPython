@@ -21,7 +21,7 @@ def phy(host, headers, linkhost, user, pwd, db):
 
     
     id = str(examlist[0][1])
-    sql = "select top 1 py.Weight, py.Temperature, py.Pulse, py.SBP, py.DBP from Plasma.Archives pa left join Plasma.Registrations pr on pa.Id = pr.ArchiveId left join Plasma.PhysicalExams py on py.Id = pr.ExamResultId where pa.Id = {} and pr.ExamResultId is not null order by pr.Created desc".format(
+    sql = "select top 1 py.Weight, py.Temperature, py.Pulse, py.SBP, py.DBP from Plasma.Archives pa join Plasma.Registrations pr on pa.Id = pr.ArchiveId join Plasma.PhysicalExams py on py.Id = pr.ExamResultId where pa.Id = {} order by pr.Created desc".format(
         "'" + id + "'")
 
     LastExam = sqlselect(sql, linkhost, user, pwd, db)

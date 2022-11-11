@@ -22,5 +22,6 @@ def login(host, hostuser, hostpas):
         headers['Cookie'] = setcookie
     else:
         log = '账号：' + hostuser + '登录失败'
+        headers = []
     return log, headers
 

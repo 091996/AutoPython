@@ -7,8 +7,12 @@ def samplereceive(host, headers, linkhost, user, pwd, db):
     recurl = host + '/Sampling/ReceiveSample/SaveBatchReceiveSample?t={}'.format(
         int(round(time.time() * 1000)))
     day = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+    Stations = sqlselect(
+        """select Value,Text from Config.Configurations where [Group] = 'Stations'""",
+        linkhost, user, pwd, db)
+
     body = {"ReceiveDate": day, "Receiver": "陆艳春", "Updated": day, "ReceiveOrgId": "44002",
-            "ReceiveDeptId": "44002", "ReceiveDeptName": "罗定浆站",
+            "ReceiveDeptId": Stations[0], "ReceiveDeptName": Stations[1],
             "BloodSamples": [{"Id": ""}]}
     Samplelist = sqlselect(
         """select top 1 Id,SampleNum from Plasma.BloodSamples where datediff(day, Created, sysdatetime()) = 0 and SampleState  = 1""", linkhost, user, pwd, db)
