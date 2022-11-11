@@ -7,10 +7,8 @@ from sqlcont import sqlselect
 
 
 def sample(host, headers, linkhost, user, pwd, db):
-    headers['Cookie'] = headers['Cookie'].split('; __')[0] + '; __RequestVerificationToken=ZwL7bZFwQDjjksd5iRXlnkurZmcZd3COXVH_2Q-q7OQDydasAEdVslUmqHKTvs3UzZf8YBsPPIPgyYPB0bbm9IG3YWv5IHipwKci9JoXO8I1; ASP.NET_SessionId=wuzzs5juiai03zi2xz5eitje; ExamBiometric=1; ValidationBiometric=1'
     headers['Accept'] = 'text/html, application/xhtml+xml, image/jxr, */*'
-    headers.update = {'Pragma': 'no-cache'}
-    headers.update = {'Content-Type': 'application/x-www-form-urlencoded'}
+
     BloodSampleUrl = host + '/Sampling/BloodSample/Save'
 
     BloodSamplelist = sqlselect("""select top 1 pp.IDNum, pa.Id, pr.Id,
@@ -32,14 +30,14 @@ def sample(host, headers, linkhost, user, pwd, db):
 
     if len(BloodSamplelist) != 0:
         # 先找出 __RequestVerificationToken
-        headers[
-            'Referer'] = host + '/Sampling/BloodSample/Create?SupplyNum={}'.format(
-            BloodSamplelist[0][5])
+        headers['Referer'] = host + '/Sampling/BloodSample/Create?SupplyNum={}'.format(BloodSamplelist[0][5])
         del headers['Content-Type']
         del headers['Pragma']
+        # cookie 分割两次：解决多次执行时cookie叠加
         headers['Cookie'] = headers['Cookie'].split('; path')[0] + '; __RequestVerificationToken=L_9VnwP7FjIr-sxI4U2ersPwoQlDFQzrvbUyKFUs8jYPahnWrwSWwstsl32JI2kOClXWR7SEP4HLpny2vkpB4VEFIi2LBOjY0EBa6MIPMh81; ASP.NET_SessionId=cdfviz0cbny5nqu1jjmgodnp; BloodSampleBiometric=1;'
+        headers['Cookie'] = headers['Cookie'].split('; __RequestVerificationToken')[0] + '; __RequestVerificationToken=L_9VnwP7FjIr-sxI4U2ersPwoQlDFQzrvbUyKFUs8jYPahnWrwSWwstsl32JI2kOClXWR7SEP4HLpny2vkpB4VEFIi2LBOjY0EBa6MIPMh81; ASP.NET_SessionId=cdfviz0cbny5nqu1jjmgodnp; BloodSampleBiometric=1;'
+
         BloobSampCreUrl = host + '/Sampling/BloodSample/Create?SupplyNum=' + str(BloodSamplelist[0][5])
-        print(headers)
         r = requests.get(BloobSampCreUrl, headers=headers, allow_redirects=False)
         time.sleep(1)
         soup = BeautifulSoup(r.text, 'html.parser', from_encoding='utf-8')
@@ -47,17 +45,19 @@ def sample(host, headers, linkhost, user, pwd, db):
         Token = links[0]['value']
 
         CollectDate = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-        print(BloodSamplelist[0])
-        Stations = sqlselect(
-            """select Value,Text from Config.Configurations where [Group] = 'Stations'""",
-            linkhost, user, pwd, db)
-        print(Stations)
+        Stations = sqlselect("""select Value,Text from Config.Configurations where [Group] = 'Stations'""",linkhost, user, pwd, db)
 
         body = "Score=&PlasmaTypeDisplay=" + BloodSamplelist[0][3] + "&PlasmaType=" + str(BloodSamplelist[0][4]) + \
                "&SampleType=0&CollectOperator=陆艳春&CollectDate=" + CollectDate + \
                "&CollectDeptName="+Stations[0][1]+"&ArchiveId=" + str(BloodSamplelist[0][1]) + \
                "&RegistrationId=" + str(BloodSamplelist[0][2]) + "&SampleState=Collected&Archive.PersonalInfo.PictureBase64=&" \
                 "Archive.PersonalInfo.IDNum=" + str(BloodSamplelist[0][0]) + "&__RequestVerificationToken=" + Token
+
+        # 追加请求头内容：解决保存报错
+        headers['Accept'] = 'text/html, application/xhtml+xml, image/jxr, */*'
+        headers['Pragma'] = 'no-cache'
+        headers['Content-Type'] = 'application/x-www-form-urlencoded'
+
         r = requests.post(BloodSampleUrl, data=body.encode('utf-8'), headers=headers, allow_redirects=False)
         if r.reason == 'Found':
             log = '浆员:' + BloodSamplelist[0][0] + '血样登记成功'
