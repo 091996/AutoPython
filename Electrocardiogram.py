@@ -5,7 +5,8 @@ from sqlcont import sqlselect
 
 
 def elereg(host, headers, link, linkuser, linkpas, linkdb):
-    headers['Cookie'] = headers['Cookie'].split('; __')[0] + '; __RequestVerificationToken=ZwL7bZFwQDjjksd5iRXlnkurZmcZd3COXVH_2Q-q7OQDydasAEdVslUmqHKTvs3UzZf8YBsPPIPgyYPB0bbm9IG3YWv5IHipwKci9JoXO8I1; ASP.NET_SessionId=wuzzs5juiai03zi2xz5eitje; ExamBiometric=1; ValidationBiometric=1'
+    headers['Cookie'] = headers['Cookie'].split('; path')[0] + '; ExamBiometric=1; ValidationBiometric=1'
+    headers['Cookie'] = headers['Cookie'].split('; ExamBiometric')[0] + '; ExamBiometric=1; ValidationBiometric=1'
     headers['Accept'] = 'text/html, application/xhtml+xml, image/jxr, */*'
     ElectrocardiogramUrl = host + '/PhysicalExamination/Electrocardiogram/Save'
     day = time.strftime('%Y-%m-%d', time.localtime(time.time()))

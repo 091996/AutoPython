@@ -8,7 +8,6 @@ from sqlcont import sqlselect
 
 def sample(host, headers, linkhost, user, pwd, db):
     headers['Accept'] = 'text/html, application/xhtml+xml, image/jxr, */*'
-
     BloodSampleUrl = host + '/Sampling/BloodSample/Save'
 
     BloodSamplelist = sqlselect("""select top 1 pp.IDNum, pa.Id, pr.Id,
@@ -33,10 +32,12 @@ def sample(host, headers, linkhost, user, pwd, db):
         headers['Referer'] = host + '/Sampling/BloodSample/Create?SupplyNum={}'.format(BloodSamplelist[0][5])
         del headers['Content-Type']
         del headers['Pragma']
-        # cookie 分割两次：解决多次执行时cookie叠加
-        headers['Cookie'] = headers['Cookie'].split('; path')[0] + '; __RequestVerificationToken=L_9VnwP7FjIr-sxI4U2ersPwoQlDFQzrvbUyKFUs8jYPahnWrwSWwstsl32JI2kOClXWR7SEP4HLpny2vkpB4VEFIi2LBOjY0EBa6MIPMh81; ASP.NET_SessionId=cdfviz0cbny5nqu1jjmgodnp; BloodSampleBiometric=1;'
-        headers['Cookie'] = headers['Cookie'].split('; __RequestVerificationToken')[0] + '; __RequestVerificationToken=L_9VnwP7FjIr-sxI4U2ersPwoQlDFQzrvbUyKFUs8jYPahnWrwSWwstsl32JI2kOClXWR7SEP4HLpny2vkpB4VEFIi2LBOjY0EBa6MIPMh81; ASP.NET_SessionId=cdfviz0cbny5nqu1jjmgodnp; BloodSampleBiometric=1;'
+        # cookie 增加内容
+        headers['Cookie'] = headers['Cookie'].split('; path')[0] + '; BloodSampleBiometric=1'
 
+        headers['Cookie'] = headers['Cookie'].split('; ExamBiometric')[0] + '; BloodSampleBiometric=1'
+
+        headers['Cookie'] = headers['Cookie'].split('; BloodSampleBiometric')[0] + '; BloodSampleBiometric=1'
         BloobSampCreUrl = host + '/Sampling/BloodSample/Create?SupplyNum=' + str(BloodSamplelist[0][5])
         r = requests.get(BloobSampCreUrl, headers=headers, allow_redirects=False)
         time.sleep(1)
